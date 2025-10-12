@@ -41,9 +41,15 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+var connection = builder.Configuration.GetConnectionString("DefaultConnection")
+                 ?? Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
+var jwtSecretKey = builder.Configuration["Jwt:Key"] ?? Environment.GetEnvironmentVariable("JWT_KEY");
+var issuer = builder.Configuration["Jwt:Issuer"] ?? Environment.GetEnvironmentVariable("JWT_ISSUER");
+var audience = builder.Configuration["Jwt:Audience"] ?? Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection"))
-        .EnableSensitiveDataLogging());
+    options.UseOracle(connection).EnableSensitiveDataLogging());
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IMedicaoEnergiaRepository, MedicaoEnergiaRepository>();
@@ -58,10 +64,6 @@ builder.Services.AddScoped<IEdificioService, EdificioService>();
 builder.Services.AddScoped<IFatorEmissaoService, FatorEmissaoService>();
 builder.Services.AddScoped<IMedidorEnergiaService, MedidorEnergiaService>();
 
-var jwtSecretKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key não configurada.");
-var issuer = builder.Configuration["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer não configurado.");
-var audience = builder.Configuration["Jwt:Audience"] ?? throw new InvalidOperationException("Jwt:Audience não configurado.");
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -73,7 +75,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = issuer,
             ValidAudience = audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey!))
         };
     });
 
