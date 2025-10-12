@@ -24,7 +24,7 @@ jobs:
         run: dotnet build --no-restore -c Release
 
       - name: Run Unit Tests
-        run: dotnet test CarbonTrackerApi.UnitTests/CarbonTrackerApi.UnitTests.csproj --no-build --verbosity normal
+        run: dotnet test CarbonTrackerApi.UnitTests/CarbonTrackerApi.UnitTests.csproj --configuration Release --verbosity normal
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
