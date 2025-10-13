@@ -1,6 +1,6 @@
 ﻿namespace CarbonTrackerApi.DTOs.Outputs;
 
-public class RegisterOutput
+public record RegisterOutput
 (
     int Id,
     string Username,
