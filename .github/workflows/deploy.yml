@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build-test-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,8 +23,29 @@ jobs:
       - name: Build
         run: dotnet build --no-restore -c Release
 
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
       - name: Run Unit Tests
         run: dotnet test CarbonTrackerApi.UnitTests/CarbonTrackerApi.UnitTests.csproj --configuration Release --verbosity normal
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
