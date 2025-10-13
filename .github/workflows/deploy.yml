@@ -30,7 +30,7 @@ jobs:
         run: echo "image_tag=${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
   gitleaks:
-    name: Run Gitleaks Scan
+    name: gitleaks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code (deep fetch required for Gitleaks)
