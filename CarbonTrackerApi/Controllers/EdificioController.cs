@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CarbonTrackerApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 [Authorize]
 public class EdificioController(IEdificioService edificioService, ILogger<EdificioController> logger)
     : ControllerBase

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace CarbonTrackerApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 [Authorize]
 public class MedicaoEnergiaController(
     IMedicaoEnergiaService medicaoEnergiaService,

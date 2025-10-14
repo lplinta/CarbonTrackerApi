@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CarbonTrackerApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class AuthController(IAuthService authService, ILogger<AuthController> logger) : ControllerBase
 {
     [HttpPost("login")]

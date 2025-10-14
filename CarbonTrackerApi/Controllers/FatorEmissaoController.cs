@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CarbonTrackerApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 [Authorize(Roles = "Admin")]
 public class FatorEmissaoController(IFatorEmissaoService fatorEmissaoService, ILogger<FatorEmissaoController> logger)
     : ControllerBase
