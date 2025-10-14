@@ -72,11 +72,18 @@ Estratégias adotadas:
 
 ### Pipeline
 <img width="1919" height="945" alt="image" src="https://github.com/user-attachments/assets/ad8f7089-56bd-437a-8fb7-207cc632a287" />
+
 ### Serviço rodando no Cloud Run
 <img width="1919" height="944" alt="image" src="https://github.com/user-attachments/assets/3f45e31b-21d0-4d9a-a0b7-b8f7473a7d99" />
-### Funcionamento de chamada rodando local
-<img width="860" height="365" alt="image" src="https://github.com/user-attachments/assets/d9904ba2-e065-4795-82fa-c384e4f35af1" />
 
+### Funcionamento de chamada rodando local
+<img width="862" height="322" alt="image" src="https://github.com/user-attachments/assets/218a154c-ef36-487b-8899-acb77d38ba30" />
+
+### Funcionamento de chamada rodando staging
+<img width="861" height="289" alt="image" src="https://github.com/user-attachments/assets/a35a2d51-4f60-4244-93ca-bd3f6b6a6a4f" />
+
+### Funcionamento de chamada rodando prod
+<img width="862" height="259" alt="image" src="https://github.com/user-attachments/assets/15dec2d8-3ca2-4050-9207-f1934271053b" />
 
 ## Tecnologias utilizadas
 
