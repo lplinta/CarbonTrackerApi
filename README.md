@@ -1,22 +1,101 @@
 # CarbonTrackerApi
 # Projeto - Cidades ESGInteligentes
 
-##  Como executar localmente com Docker
+## Como executar localmente com Docker
 
-Descreva os passos para subir a aplicação.
+1. Clone o repositório e entre na pasta do projeto:
+```bash
+git clone https://github.com/lplinta/CarbonTrackerApi.git
+cd CarbonTrackerApi
+```
 
-##  Pipeline CI/CD
+2. Suba os containers (reconstruindo a imagem):
+```bash
+docker-compose up --build -d
+```
 
-Explique as ferramentas utilizadas, as etapas do pipeline e seu funcionamento.
+3. Acesse a API:
+- [Swagger](http://localhost:8080/swagger/index.html)
 
-##  Containerização
+4. Para parar e remover containers:
+```bash
+docker-compose down
+```
 
-Mostre o conteúdo do Dockerfile e as estratégias adotadas.
+## Pipeline CI/CD
 
-##  Prints do funcionamento
+A aplicação utiliza o GitHub Actions para CI/CD. O fluxo principal (.github/workflows/deploy.yml) é acionado automaticamente em todo push para a branch main.
+
+### Fluxo da Pipeline
+- Build: Compilação da aplicação .NET 9 e restauração de dependências.
+- Gitleaks: Escaneamento do repositório em busca de segredos ou credenciais expostas.
+- Testes: Execução de todos os testes unitários.
+- Deployment Staging (Automático): Se as etapas anteriores forem bem-sucedidas, a imagem Docker da aplicação é construída, publicada no Google Artifact Registry, e o deploy é realizado automaticamente no serviço carbontrackerapi-staging.
+- Deployment Produção (Protegido/Manual): Esta etapa é protegida por um GitHub Environment com aprovação obrigatória. Uma vez aprovado, o deploy é realizado no serviço carbontrackerapi, reutilizando a mesma imagem Docker validada em Staging.
+
+## Containerização
+
+Dockerfile (resumo / conteúdo principal usado na pipeline):
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+COPY ["CarbonTrackerApi/CarbonTrackerApi.csproj", "CarbonTrackerApi/"]
+
+RUN dotnet restore "CarbonTrackerApi/CarbonTrackerApi.csproj"
+
+COPY . .
+
+
+FROM build AS publish
+RUN dotnet publish "CarbonTrackerApi/CarbonTrackerApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+WORKDIR /app
+EXPOSE 8080
+
+COPY --from=publish /app/publish .
+
+ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+
+ENTRYPOINT ["dotnet", "CarbonTrackerApi.dll"]
+```
+
+Estratégias adotadas:
+- Multi-stage build para gerar imagens menores (build → publish → runtime).
+- Porta exposta 8080 e variável `ASPNETCORE_URLS` configurada para `http://+:8080`.
+- Ambiente de runtime definido via `ASPNETCORE_ENVIRONMENT`.
+
+## Prints do funcionamento
 
 Inclua evidências (prints ou links) de execução, deploy e funcionamento em staging e produção.
 
-##  Tecnologias utilizadas
+## Tecnologias utilizadas
 
-Liste as stacks, frameworks e ferramentas usadas.
+- C# / .NET 9
+- ASP.NET Core Web API
+- Entity Framework Core
+- Oracle XE (container para desenvolvimento)
+- Docker
+- GitHub Actions
+- Google Cloud Run
+- Google Artifact Registry
+- Gitleaks
+
+## Checklist de Entrega
+
+- [x] Projeto compactado em .ZIP com estrutura organizada:
+  - Dockerfile
+  - docker-compose.yml
+  - src/
+  - README.md
+  - .github/workflows/
+  - docs/ (prints e PDF)
+- [x] Dockerfile funcional
+- [x] docker-compose.yml funcional
+- [x] Pipeline com etapas de build, teste e deploy
+- [x] README.md com instruções e prints
+- [x] Documentação técnica (PDF ou PPT) com evidências
+- [x] Deploy realizado em staging e produção
