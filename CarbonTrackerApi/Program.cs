@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Oracle.ManagedDataAccess.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,8 +49,7 @@ var jwtSecretKey = builder.Configuration["Jwt:Key"] ?? Environment.GetEnvironmen
 var issuer = builder.Configuration["Jwt:Issuer"] ?? Environment.GetEnvironmentVariable("JWT_ISSUER");
 var audience = builder.Configuration["Jwt:Audience"] ?? Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseOracle(connection).EnableSensitiveDataLogging());
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseOracle(connection));
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IMedicaoEnergiaRepository, MedicaoEnergiaRepository>();
@@ -85,6 +85,27 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    const int maxRetries = 10;
+    var delay = TimeSpan.FromSeconds(5);
+
+    for (var i = 0; i < maxRetries; i++)
+    {
+        try
+        {
+            if (db.Database.HasPendingModelChanges())
+                db.Database.Migrate();
+            break;
+        }
+        catch (OracleException)
+        {
+            if (i == maxRetries - 1) throw;
+            Console.WriteLine($"Tentando conectar ao banco... tentativa {i + 1}/{maxRetries}");
+            Thread.Sleep(delay);
+        }
+    }
     app.UseSwagger();
     app.UseSwaggerUI();
 }
