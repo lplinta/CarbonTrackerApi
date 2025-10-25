@@ -49,7 +49,12 @@ var jwtSecretKey = builder.Configuration["Jwt:Key"] ?? Environment.GetEnvironmen
 var issuer = builder.Configuration["Jwt:Issuer"] ?? Environment.GetEnvironmentVariable("JWT_ISSUER");
 var audience = builder.Configuration["Jwt:Audience"] ?? Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseOracle(connection));
+builder.Services.AddDbContext<ApplicationDbContext>();
+
+if (builder.Environment.EnvironmentName != "IntegrationTesting")
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseOracle(connection));
+}
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IMedicaoEnergiaRepository, MedicaoEnergiaRepository>();
@@ -118,3 +123,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

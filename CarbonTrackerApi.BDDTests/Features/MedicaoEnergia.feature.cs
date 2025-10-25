@@ -24,8 +24,8 @@ namespace CarbonTrackerApi.BDDTests.Features
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("pt"), "Features", "Registro de medições de energia", "Como administrador autenticado\r\nQuero registrar medições de consumo de energia\r\nP" +
-                "ara que o sistema armazene os dados corretamente", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("pt"), "Features", "Registro de medições de energia", "Como usuário da API\r\nQuero registrar medições de energia\r\nPara que o sistema arma" +
+                "zene os dados corretamente", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -106,7 +106,7 @@ namespace CarbonTrackerApi.BDDTests.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MedicaoEnergia.feature.ndjson", 8);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MedicaoEnergia.feature.ndjson", 5);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -134,15 +134,15 @@ namespace CarbonTrackerApi.BDDTests.Features
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Registrar medição com sucesso")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Cadastro bem-sucedido de medição de energia")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Registro de medições de energia")]
-        [global::Xunit.TraitAttribute("Description", "Registrar medição com sucesso")]
-        public async global::System.Threading.Tasks.Task RegistrarMedicaoComSucesso()
+        [global::Xunit.TraitAttribute("Description", "Cadastro bem-sucedido de medição de energia")]
+        public async global::System.Threading.Tasks.Task CadastroBem_SucedidoDeMedicaoDeEnergia()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Registrar medição com sucesso", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cadastro bem-sucedido de medição de energia", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 7
@@ -156,36 +156,54 @@ namespace CarbonTrackerApi.BDDTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 8
-        await testRunner.GivenAsync("que o serviço de medição está disponível", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+        await testRunner.GivenAsync("que o edifício com ID 1 existe no banco de dados", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 9
-        await testRunner.AndAsync("que o input de medição é válido", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+        await testRunner.GivenAsync("que o medidor de energia com ID 1 existe no banco de dados", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "campo",
+                            "valor"});
+                table1.AddRow(new string[] {
+                            "consumoValor",
+                            "123,45"});
+                table1.AddRow(new string[] {
+                            "unidadeMedida",
+                            "kWh"});
+                table1.AddRow(new string[] {
+                            "timestamp",
+                            "2025-10-25T10:00:00Z"});
+                table1.AddRow(new string[] {
+                            "medidorEnergiaId",
+                            "1"});
 #line 10
-        await testRunner.WhenAsync("o usuário enviar uma requisição POST para o endpoint de medição", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+        await testRunner.GivenAsync("que eu tenha os seguintes dados da medição:", ((string)(null)), table1, "Dado ");
 #line hidden
-#line 11
-        await testRunner.ThenAsync("o sistema deve retornar status 201", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line 16
+        await testRunner.WhenAsync("eu enviar a requisição para o endpoint \"/MedicaoEnergia\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
-#line 12
-        await testRunner.AndAsync("os dados da medição criada devem ser retornados", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+#line 17
+        await testRunner.ThenAsync("o status code da resposta deve ser 201", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line hidden
+#line 18
+        await testRunner.AndAsync("o corpo da resposta deve conter o campo \"consumoValor\" com valor \"123,45\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Input inválido retorna 400")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Cadastro de medição com dados inválidos")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Registro de medições de energia")]
-        [global::Xunit.TraitAttribute("Description", "Input inválido retorna 400")]
-        public async global::System.Threading.Tasks.Task InputInvalidoRetorna400()
+        [global::Xunit.TraitAttribute("Description", "Cadastro de medição com dados inválidos")]
+        public async global::System.Threading.Tasks.Task CadastroDeMedicaoComDadosInvalidos()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Input inválido retorna 400", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cadastro de medição com dados inválidos", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 14
+#line 20
     this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -195,133 +213,46 @@ namespace CarbonTrackerApi.BDDTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 15
-        await testRunner.GivenAsync("que o input de medição é inválido", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "campo",
+                            "valor"});
+                table2.AddRow(new string[] {
+                            "consumoValor",
+                            "-10"});
+                table2.AddRow(new string[] {
+                            "unidadeMedida",
+                            "kWh"});
+                table2.AddRow(new string[] {
+                            "timestamp",
+                            "2025-10-25T10:00:00Z"});
+                table2.AddRow(new string[] {
+                            "medidorEnergiaId",
+                            "1"});
+#line 21
+        await testRunner.GivenAsync("que eu tenha os seguintes dados da medição:", ((string)(null)), table2, "Dado ");
 #line hidden
-#line 16
-        await testRunner.WhenAsync("o usuário enviar uma requisição POST para o endpoint de medição", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+#line 27
+        await testRunner.WhenAsync("eu enviar a requisição para o endpoint \"/MedicaoEnergia\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
-#line 17
-        await testRunner.ThenAsync("o sistema deve retornar status 400", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line 28
+        await testRunner.ThenAsync("o status code da resposta deve ser 400", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Serviço retorna null retorna 404")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Cadastro de medição com medidor inexistente")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Registro de medições de energia")]
-        [global::Xunit.TraitAttribute("Description", "Serviço retorna null retorna 404")]
-        public async global::System.Threading.Tasks.Task ServicoRetornaNullRetorna404()
+        [global::Xunit.TraitAttribute("Description", "Cadastro de medição com medidor inexistente")]
+        public async global::System.Threading.Tasks.Task CadastroDeMedicaoComMedidorInexistente()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Serviço retorna null retorna 404", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cadastro de medição com medidor inexistente", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 19
-    this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 20
-        await testRunner.GivenAsync("que o serviço retorna null ao adicionar a medição", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
-#line hidden
-#line 21
-        await testRunner.WhenAsync("o usuário enviar uma requisição POST para o endpoint de medição", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
-#line hidden
-#line 22
-        await testRunner.ThenAsync("o sistema deve retornar status 404", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.SkippableFactAttribute(DisplayName="Serviço lança InvalidOperationException retorna 404")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Registro de medições de energia")]
-        [global::Xunit.TraitAttribute("Description", "Serviço lança InvalidOperationException retorna 404")]
-        public async global::System.Threading.Tasks.Task ServicoLancaInvalidOperationExceptionRetorna404()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "3";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Serviço lança InvalidOperationException retorna 404", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 24
-    this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 25
-        await testRunner.GivenAsync("que o serviço lança InvalidOperationException", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
-#line hidden
-#line 26
-        await testRunner.WhenAsync("o usuário enviar uma requisição POST para o endpoint de medição", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
-#line hidden
-#line 27
-        await testRunner.ThenAsync("o sistema deve retornar status 404", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.SkippableFactAttribute(DisplayName="Serviço lança ArgumentException retorna 400")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Registro de medições de energia")]
-        [global::Xunit.TraitAttribute("Description", "Serviço lança ArgumentException retorna 400")]
-        public async global::System.Threading.Tasks.Task ServicoLancaArgumentExceptionRetorna400()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "4";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Serviço lança ArgumentException retorna 400", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 29
-    this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
 #line 30
-        await testRunner.GivenAsync("que o serviço lança ArgumentException", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
-#line hidden
-#line 31
-        await testRunner.WhenAsync("o usuário enviar uma requisição POST para o endpoint de medição", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
-#line hidden
-#line 32
-        await testRunner.ThenAsync("o sistema deve retornar status 400", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.SkippableFactAttribute(DisplayName="Serviço lança Exception retorna 500")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Registro de medições de energia")]
-        [global::Xunit.TraitAttribute("Description", "Serviço lança Exception retorna 500")]
-        public async global::System.Threading.Tasks.Task ServicoLancaExceptionRetorna500()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "5";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Serviço lança Exception retorna 500", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 34
     this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -331,14 +262,29 @@ namespace CarbonTrackerApi.BDDTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 35
-        await testRunner.GivenAsync("que o serviço lança uma exceção genérica", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
-#line hidden
-#line 36
-        await testRunner.WhenAsync("o usuário enviar uma requisição POST para o endpoint de medição", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                            "campo",
+                            "valor"});
+                table3.AddRow(new string[] {
+                            "consumoValor",
+                            "50"});
+                table3.AddRow(new string[] {
+                            "unidadeMedida",
+                            "kWh"});
+                table3.AddRow(new string[] {
+                            "timestamp",
+                            "2025-10-25T10:00:00Z"});
+                table3.AddRow(new string[] {
+                            "medidorEnergiaId",
+                            "9999"});
+#line 31
+        await testRunner.GivenAsync("que eu tenha os seguintes dados da medição:", ((string)(null)), table3, "Dado ");
 #line hidden
 #line 37
-        await testRunner.ThenAsync("o sistema deve retornar status 500", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+        await testRunner.WhenAsync("eu enviar a requisição para o endpoint \"/MedicaoEnergia\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+#line hidden
+#line 38
+        await testRunner.ThenAsync("o status code da resposta deve ser 404", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

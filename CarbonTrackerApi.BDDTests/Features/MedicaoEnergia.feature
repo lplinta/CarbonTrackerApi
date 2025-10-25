@@ -1,37 +1,38 @@
 ﻿# language: pt
 Funcionalidade: Registro de medições de energia
-Como administrador autenticado
-Quero registrar medições de consumo de energia
+Como usuário da API
+Quero registrar medições de energia
 Para que o sistema armazene os dados corretamente
 
-    Cenário: Registrar medição com sucesso
-        Dado que o serviço de medição está disponível
-        E que o input de medição é válido
-        Quando o usuário enviar uma requisição POST para o endpoint de medição
-        Então o sistema deve retornar status 201
-        E os dados da medição criada devem ser retornados
+    Cenário: Cadastro bem-sucedido de medição de energia
+        Dado que o edifício com ID 1 existe no banco de dados
+        Dado que o medidor de energia com ID 1 existe no banco de dados
+        Dado que eu tenha os seguintes dados da medição:
+          | campo            | valor                |
+          | consumoValor     | 123,45               |
+          | unidadeMedida    | kWh                  |
+          | timestamp        | 2025-10-25T10:00:00Z |
+          | medidorEnergiaId | 1                    |
+        Quando eu enviar a requisição para o endpoint "/MedicaoEnergia"
+        Então o status code da resposta deve ser 201
+        E o corpo da resposta deve conter o campo "consumoValor" com valor "123,45"
 
-    Cenário: Input inválido retorna 400
-        Dado que o input de medição é inválido
-        Quando o usuário enviar uma requisição POST para o endpoint de medição
-        Então o sistema deve retornar status 400
+    Cenário: Cadastro de medição com dados inválidos
+        Dado que eu tenha os seguintes dados da medição:
+          | campo            | valor                |
+          | consumoValor     | -10                  |
+          | unidadeMedida    | kWh                  |
+          | timestamp        | 2025-10-25T10:00:00Z |
+          | medidorEnergiaId | 1                    |
+        Quando eu enviar a requisição para o endpoint "/MedicaoEnergia"
+        Então o status code da resposta deve ser 400
 
-    Cenário: Serviço retorna null retorna 404
-        Dado que o serviço retorna null ao adicionar a medição
-        Quando o usuário enviar uma requisição POST para o endpoint de medição
-        Então o sistema deve retornar status 404
-
-    Cenário: Serviço lança InvalidOperationException retorna 404
-        Dado que o serviço lança InvalidOperationException
-        Quando o usuário enviar uma requisição POST para o endpoint de medição
-        Então o sistema deve retornar status 404
-
-    Cenário: Serviço lança ArgumentException retorna 400
-        Dado que o serviço lança ArgumentException
-        Quando o usuário enviar uma requisição POST para o endpoint de medição
-        Então o sistema deve retornar status 400
-
-    Cenário: Serviço lança Exception retorna 500
-        Dado que o serviço lança uma exceção genérica
-        Quando o usuário enviar uma requisição POST para o endpoint de medição
-        Então o sistema deve retornar status 500
+    Cenário: Cadastro de medição com medidor inexistente
+        Dado que eu tenha os seguintes dados da medição:
+          | campo            | valor                |
+          | consumoValor     | 50                   |
+          | unidadeMedida    | kWh                  |
+          | timestamp        | 2025-10-25T10:00:00Z |
+          | medidorEnergiaId | 9999                 |
+        Quando eu enviar a requisição para o endpoint "/MedicaoEnergia"
+        Então o status code da resposta deve ser 404

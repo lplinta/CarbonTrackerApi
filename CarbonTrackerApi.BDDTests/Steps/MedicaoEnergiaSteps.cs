@@ -1,108 +1,103 @@
-﻿using CarbonTrackerApi.Controllers;
+﻿using System.Text;
+using CarbonTrackerApi.BDDTests.Utils;
+using CarbonTrackerApi.Data;
 using CarbonTrackerApi.DTOs.Inputs;
-using CarbonTrackerApi.DTOs.Outputs;
-using CarbonTrackerApi.Interfaces.Services;
 using CarbonTrackerApi.Models;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Moq;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Reqnroll;
 
 namespace CarbonTrackerApi.BDDTests.Steps;
 
 [Binding]
-public class MedicaoEnergiaSteps
+public class MedicaoEnergiaSteps(CustomWebApplicationFactory factory)
 {
-    private readonly Mock<IMedicaoEnergiaService> _mockService = new();
-    private readonly Mock<ILogger<MedicaoEnergiaController>> _mockLogger = new();
-    private MedicaoEnergiaController? _controller;
-    private IActionResult? _resultado;
+    private readonly HttpClient _client = factory.CreateClient();
+    private HttpResponseMessage? _response;
     private MedicaoEnergiaInput? _input;
 
-    [Given("que o serviço de medição está disponível")]
-    public void DadoQueOServicoDeMedicaoEstaDisponivel()
+    [Given("que o edifício com ID {int} existe no banco de dados")]
+    public void GivenQueOEdificioComIdExisteNoBancoDeDados(int edificioId)
     {
-        _controller = new MedicaoEnergiaController(_mockService.Object, _mockLogger.Object);
-    }
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    [Given("que o input de medição é válido")]
-    public void DadoQueOInputDeMedicaoEValido()
-    {
-        _input = new MedicaoEnergiaInput(1, 100.5m, "kWh", DateTime.UtcNow);
-        var medicao = new MedicaoEnergia
+        var medidorExistente = db.Set<Edificio>().Find(edificioId);
+
+        if (medidorExistente == null)
         {
-            Id = 1,
-            ConsumoValor = 100.5m,
-            UnidadeMedida = "kWh",
-            Timestamp = _input.Timestamp,
-            MedidorEnergiaId = 1
+            var novoEdificio = new Edificio
+            {
+                Id = edificioId,
+            };
+
+            db.Set<Edificio>().Add(novoEdificio);
+            db.SaveChanges();
+        }
+    }
+
+    [Given(@"que o medidor de energia com ID {int} existe no banco de dados")]
+    public void DadoQueOMedidorDeEnergiaComIdExisteNoBancoDeDados(int medidorId)
+    {
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        var medidorExistente = db.Set<MedidorEnergia>().Find(medidorId);
+
+        if (medidorExistente == null)
+        {
+            var novoMedidor = new MedidorEnergia
+            {
+                Id = medidorId,
+                NumeroSerie = "123456789",
+                TipoMedidor = "Eletricidade",
+                Localizacao = "Casa",
+                EdificioId = 1
+            };
+
+            db.Set<MedidorEnergia>().Add(novoMedidor);
+            db.SaveChanges();
+        }
+    }
+
+    [Given(@"que eu tenha os seguintes dados da medição:")]
+    public void DadoQueEuTenhaOsSeguintesDadosDaMedicao(Table table)
+    {
+        var data = table.Rows.ToDictionary(r => r["campo"], r => r["valor"]);
+
+        _input = new MedicaoEnergiaInput
+        {
+            ConsumoValor = decimal.Parse(data["consumoValor"]),
+            UnidadeMedida = data["unidadeMedida"],
+            Timestamp = DateTime.Parse(data["timestamp"]),
+            MedidorEnergiaId = int.Parse(data["medidorEnergiaId"])
         };
-
-        _mockService.Setup(s => s.AdicionarMedicao(_input)).ReturnsAsync(medicao);
     }
 
-    [Given("que o input de medição é inválido")]
-    public void DadoQueOInputDeMedicaoEInvalido()
+    [When(@"eu enviar a requisição para o endpoint ""(.*)""")]
+    public async Task QuandoEuEnviarARequisicaoParaOEndpoint(string endpoint)
     {
-        _controller = new MedicaoEnergiaController(_mockService.Object, _mockLogger.Object);
-        _controller.ModelState.AddModelError("ConsumoValor", "O valor de consumo deve ser maior que zero.");
-        _input = new MedicaoEnergiaInput(0, 0, "", DateTime.MinValue);
+        var json = JsonConvert.SerializeObject(_input);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        _response = await _client.PostAsync(endpoint, content);
     }
 
-    [Given("que o serviço retorna null ao adicionar a medição")]
-    public void DadoQueOServicoRetornaNullAoAdicionarAMedicao()
+    [Then(@"o status code da resposta deve ser (.*)")]
+    public void EntaoOStatusCodeDaRespostaDeveSer(int statusCode)
     {
-        _input = new MedicaoEnergiaInput(999, 100.5m, "kWh", DateTime.UtcNow);
-        _mockService.Setup(s => s.AdicionarMedicao(_input)).ReturnsAsync((MedicaoEnergia?)null);
-        _controller = new MedicaoEnergiaController(_mockService.Object, _mockLogger.Object);
+        _response.Should().NotBeNull();
+        ((int)_response!.StatusCode).Should().Be(statusCode);
     }
 
-    [Given("que o serviço lança InvalidOperationException")]
-    public void DadoQueOServicoLancaInvalidOperationException()
+    [Then(@"o corpo da resposta deve conter o campo ""(.*)"" com valor ""(.*)""")]
+    public async Task EntaoOCorpoDaRespostaDeveConterOCampoComValor(string campo, string valorEsperado)
     {
-        _input = new MedicaoEnergiaInput(1, 100.5m, "kWh", DateTime.UtcNow);
-        _mockService.Setup(s => s.AdicionarMedicao(_input))
-            .ThrowsAsync(new InvalidOperationException("Medidor de energia não encontrado."));
-        _controller = new MedicaoEnergiaController(_mockService.Object, _mockLogger.Object);
-    }
+        var body = await _response!.Content.ReadAsStringAsync();
+        var json = JsonConvert.DeserializeObject<Dictionary<string, object>>(body);
 
-    [Given("que o serviço lança ArgumentException")]
-    public void DadoQueOServicoLancaArgumentException()
-    {
-        _input = new MedicaoEnergiaInput(1, 100.5m, "kWh", DateTime.UtcNow);
-        _mockService.Setup(s => s.AdicionarMedicao(_input))
-            .ThrowsAsync(new ArgumentException("Unidade de medida inválida."));
-        _controller = new MedicaoEnergiaController(_mockService.Object, _mockLogger.Object);
-    }
-
-    [Given("que o serviço lança uma exceção genérica")]
-    public void DadoQueOServicoLancaUmaExcecaoGenerica()
-    {
-        _input = new MedicaoEnergiaInput(1, 100.5m, "kWh", DateTime.UtcNow);
-        _mockService.Setup(s => s.AdicionarMedicao(_input))
-            .ThrowsAsync(new Exception("Erro inesperado"));
-        _controller = new MedicaoEnergiaController(_mockService.Object, _mockLogger.Object);
-    }
-
-    [When("o usuário enviar uma requisição POST para o endpoint de medição")]
-    public async Task QuandoOUsuarioEnviarUmaRequisicaoPostParaOEndpointDeMedicao()
-    {
-        _resultado = await _controller!.PostMedicaoEnergia(_input!);
-    }
-
-    [Then("o sistema deve retornar status (.*)")]
-    public void EntaoOSistemaDeveRetornarStatus(int statusCode)
-    {
-        _resultado.Should().BeAssignableTo<ObjectResult>();
-        var result = _resultado as ObjectResult;
-        result?.StatusCode.Should().Be(statusCode);
-    }
-
-    [Then("os dados da medição criada devem ser retornados")]
-    public void EntaoOsDadosDaMedicaoCriadaDevemSerRetornados()
-    {
-        var result = _resultado as ObjectResult;
-        result?.Value.Should().BeOfType<MedicaoEnergiaOutput>();
+        json.Should().ContainKey(campo);
+        json[campo].ToString().Should().Be(valorEsperado);
     }
 }
