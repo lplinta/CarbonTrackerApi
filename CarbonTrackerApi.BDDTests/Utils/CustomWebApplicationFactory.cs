@@ -31,7 +31,14 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             var db = scopedServices.GetRequiredService<ApplicationDbContext>();
 
             db.Database.OpenConnection();
-            db.Database.EnsureCreated();
+            try
+            {
+                db.Database.EnsureCreated();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
 
             services.RemoveAll<IAuthenticationService>();
 

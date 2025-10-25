@@ -3,7 +3,6 @@ using CarbonTrackerApi.BDDTests.Utils;
 using CarbonTrackerApi.Data;
 using CarbonTrackerApi.DTOs.Inputs;
 using CarbonTrackerApi.Models;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Reqnroll;
@@ -11,10 +10,9 @@ using Reqnroll;
 namespace CarbonTrackerApi.BDDTests.Steps;
 
 [Binding]
-public class MedicaoEnergiaSteps(CustomWebApplicationFactory factory)
+public class MedicaoEnergiaSteps(CustomWebApplicationFactory factory, ScenarioContext scenarioContext)
 {
     private readonly HttpClient _client = factory.CreateClient();
-    private HttpResponseMessage? _response;
     private MedicaoEnergiaInput? _input;
 
     [Given("que o edifício com ID {int} existe no banco de dados")]
@@ -81,23 +79,7 @@ public class MedicaoEnergiaSteps(CustomWebApplicationFactory factory)
         var json = JsonConvert.SerializeObject(_input);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        _response = await _client.PostAsync(endpoint, content);
-    }
-
-    [Then(@"o status code da resposta deve ser (.*)")]
-    public void EntaoOStatusCodeDaRespostaDeveSer(int statusCode)
-    {
-        _response.Should().NotBeNull();
-        ((int)_response!.StatusCode).Should().Be(statusCode);
-    }
-
-    [Then(@"o corpo da resposta deve conter o campo ""(.*)"" com valor ""(.*)""")]
-    public async Task EntaoOCorpoDaRespostaDeveConterOCampoComValor(string campo, string valorEsperado)
-    {
-        var body = await _response!.Content.ReadAsStringAsync();
-        var json = JsonConvert.DeserializeObject<Dictionary<string, object>>(body);
-
-        json.Should().ContainKey(campo);
-        json[campo].ToString().Should().Be(valorEsperado);
+        var response = await _client.PostAsync(endpoint, content);
+        scenarioContext.Set(response, "Response");
     }
 }
