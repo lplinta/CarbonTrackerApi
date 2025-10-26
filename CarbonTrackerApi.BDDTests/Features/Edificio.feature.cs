@@ -17,22 +17,22 @@ namespace CarbonTrackerApi.BDDTests.Features
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class APIDeEdificiosFeature : object, global::Xunit.IClassFixture<APIDeEdificiosFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class GestaoDeEdificiosFeature : object, global::Xunit.IClassFixture<GestaoDeEdificiosFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("pt"), "Features", "API de Edifícios", "Valida as operações da API de edifícios, incluindo criação, listagem e erros de e" +
-                "ntrada.", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("pt"), "Features", "Gestão de Edifícios", "  Como um usuário autenticado\r\n  Eu quero gerenciar informações de edifícios\r\n  P" +
+                "ara rastrear o consumo de carbono por localização", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
 #line 1 "Edificio.feature"
 #line hidden
         
-        public APIDeEdificiosFeature(APIDeEdificiosFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public GestaoDeEdificiosFeature(GestaoDeEdificiosFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -106,7 +106,7 @@ namespace CarbonTrackerApi.BDDTests.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Edificio.feature.ndjson", 5);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Edificio.feature.ndjson", 4);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -134,21 +134,19 @@ namespace CarbonTrackerApi.BDDTests.Features
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Criar um novo edifício com sucesso")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "API de Edifícios")]
-        [global::Xunit.TraitAttribute("Description", "Criar um novo edifício com sucesso")]
-        [global::Xunit.TraitAttribute("Category", "criar")]
-        public async global::System.Threading.Tasks.Task CriarUmNovoEdificioComSucesso()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Cadastro bem-sucedido de um novo edifício")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Gestão de Edifícios")]
+        [global::Xunit.TraitAttribute("Description", "Cadastro bem-sucedido de um novo edifício")]
+        public async global::System.Threading.Tasks.Task CadastroBem_SucedidoDeUmNovoEdificio()
         {
-            string[] tagsOfScenario = new string[] {
-                    "criar"};
+            string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Criar um novo edifício com sucesso", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cadastro bem-sucedido de um novo edifício", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 6
-  this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line 7
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -157,100 +155,75 @@ namespace CarbonTrackerApi.BDDTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 7
-    await testRunner.GivenAsync("a requisição POST para \"/api/edificio\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
-#line hidden
 #line 8
-    await testRunner.AndAsync("o corpo da requisição é:", "{\r\n  \"nome\": \"Prédio Central\",\r\n  \"cidade\": \"São Paulo\",\r\n  \"endereco\": \"Rua das " +
-                        "Flores, 100\",\r\n  \"tipoEdificio\": \"Comercial\",\r\n  \"latitude\": \"-23.5505\",\r\n  \"lon" +
-                        "gitude\": \"-46.6333\"\r\n}", ((global::Reqnroll.Table)(null)), "E ");
+    await testRunner.GivenAsync("que eu esteja autenticado como um usuário válido", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
-#line 19
-    await testRunner.WhenAsync("a requisição for enviada", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "campo",
+                            "valor"});
+                table1.AddRow(new string[] {
+                            "nome",
+                            "Sede Central"});
+                table1.AddRow(new string[] {
+                            "endereco",
+                            "Av. Paulista, 1000"});
+                table1.AddRow(new string[] {
+                            "cidade",
+                            "Itarare"});
+                table1.AddRow(new string[] {
+                            "tipoEdificio",
+                            "Casa"});
+#line 9
+    await testRunner.GivenAsync("que eu tenha os seguintes dados de edifício:", ((string)(null)), table1, "Dado ");
 #line hidden
-#line 20
-    await testRunner.ThenAsync("o sistema deve retornar status 201", ((string)(null)), ((global::Reqnroll.Table)(null)), "Entao ");
+#line 15
+    await testRunner.WhenAsync("eu enviar a requisição POST para o endpoint \"/Edificio\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
-#line 21
-    await testRunner.AndAsync("o corpo deve corresponder ao schema \"EdificioOutput.schema.json\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+#line 16
+    await testRunner.ThenAsync("o status code da resposta deve ser 201", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line hidden
+#line 17
+    await testRunner.AndAsync("o corpo da resposta deve conter o campo \"nome\" com valor \"Sede Central\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Listar edifícios existentes")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "API de Edifícios")]
-        [global::Xunit.TraitAttribute("Description", "Listar edifícios existentes")]
-        [global::Xunit.TraitAttribute("Category", "listar")]
-        public async global::System.Threading.Tasks.Task ListarEdificiosExistentes()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Busca bem-sucedida de um edifício existente")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Gestão de Edifícios")]
+        [global::Xunit.TraitAttribute("Description", "Busca bem-sucedida de um edifício existente")]
+        public async global::System.Threading.Tasks.Task BuscaBem_SucedidaDeUmEdificioExistente()
         {
-            string[] tagsOfScenario = new string[] {
-                    "listar"};
+            string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Listar edifícios existentes", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Busca bem-sucedida de um edifício existente", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
+#line 19
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 20
+    await testRunner.GivenAsync("que eu esteja autenticado como um usuário válido", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+#line hidden
+#line 21
+    await testRunner.GivenAsync("que o edifício com ID 999 e Nome \"Filial Norte\" existe no banco de dados", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+#line hidden
+#line 22
+    await testRunner.WhenAsync("eu enviar a requisição GET para o endpoint \"/Edificio/999\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+#line hidden
+#line 23
+    await testRunner.ThenAsync("o status code da resposta deve ser 200", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line hidden
 #line 24
-  this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 25
-    await testRunner.GivenAsync("a requisição GET para \"/api/edificio?pageNumber=1&pageSize=10\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
-#line hidden
-#line 26
-    await testRunner.WhenAsync("a requisição for enviada", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
-#line hidden
-#line 27
-    await testRunner.ThenAsync("o sistema deve retornar status 200", ((string)(null)), ((global::Reqnroll.Table)(null)), "Entao ");
-#line hidden
-#line 28
-    await testRunner.AndAsync("o corpo deve corresponder ao schema \"PaginatedOutput.schema.json\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.SkippableFactAttribute(DisplayName="Tentar criar edifício com dados inválidos")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "API de Edifícios")]
-        [global::Xunit.TraitAttribute("Description", "Tentar criar edifício com dados inválidos")]
-        [global::Xunit.TraitAttribute("Category", "erro")]
-        public async global::System.Threading.Tasks.Task TentarCriarEdificioComDadosInvalidos()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "erro"};
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Tentar criar edifício com dados inválidos", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 31
-  this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 32
-    await testRunner.GivenAsync("a requisição POST para \"/api/edificio\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
-#line hidden
-#line 33
-    await testRunner.AndAsync("o corpo da requisição é:", "{\r\n  \"nome\": \"\",\r\n  \"cidade\": \"\",\r\n  \"endereco\": \"\",\r\n  \"tipoEdificio\": \"\"\r\n}", ((global::Reqnroll.Table)(null)), "E ");
-#line hidden
-#line 42
-    await testRunner.WhenAsync("a requisição for enviada", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
-#line hidden
-#line 43
-    await testRunner.ThenAsync("o sistema deve retornar status 400", ((string)(null)), ((global::Reqnroll.Table)(null)), "Entao ");
+    await testRunner.AndAsync("o corpo da resposta deve conter o campo \"nome\" com valor \"Filial Norte\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -263,12 +236,12 @@ namespace CarbonTrackerApi.BDDTests.Features
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await APIDeEdificiosFeature.FeatureSetupAsync();
+                await GestaoDeEdificiosFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await APIDeEdificiosFeature.FeatureTearDownAsync();
+                await GestaoDeEdificiosFeature.FeatureTearDownAsync();
             }
         }
     }

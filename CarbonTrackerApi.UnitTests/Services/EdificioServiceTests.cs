@@ -29,8 +29,6 @@ public class EdificioServiceTests
         );
     }
 
-    // --- Testes para ObterConsumoDiario ---
-
     [Fact]
     public async Task ObterConsumoDiario_DeveRetornarConsumoCorreto_QuandoDadosValidos()
     {
@@ -76,18 +74,18 @@ public class EdificioServiceTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(2, result.Items.Count); // Dois dias de consumo
+        Assert.Equal(2, result.Items.Count);
         Assert.Equal(2, result.TotalCount);
 
         var consumoDia1 = result.Items.FirstOrDefault(c => c.Data.Date == new DateTime(2024, 01, 01).Date);
         Assert.NotNull(consumoDia1);
-        Assert.Equal(90.0m, consumoDia1.ConsumoTotalKWh); // 50 + 30 + 10
-        Assert.Equal(50 * 0.5m + 30 * 0.5m + 10 * 0.8m, consumoDia1.EmissaoCo2Equivalente); // 25 + 15 + 8 = 48
+        Assert.Equal(90.0m, consumoDia1.ConsumoTotalKWh);
+        Assert.Equal(50 * 0.5m + 30 * 0.5m + 10 * 0.8m, consumoDia1.EmissaoCo2Equivalente);
 
         var consumoDia2 = result.Items.FirstOrDefault(c => c.Data.Date == new DateTime(2024, 01, 02).Date);
         Assert.NotNull(consumoDia2);
-        Assert.Equal(25.0m, consumoDia2.ConsumoTotalKWh); // 20 + 5
-        Assert.Equal(20 * 0.5m + 5 * 0.8m, consumoDia2.EmissaoCo2Equivalente); // 10 + 4 = 14
+        Assert.Equal(25.0m, consumoDia2.ConsumoTotalKWh);
+        Assert.Equal(20 * 0.5m + 5 * 0.8m, consumoDia2.EmissaoCo2Equivalente);
     }
 
     [Fact]
