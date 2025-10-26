@@ -12,7 +12,7 @@ Cenario: Login com credenciais inválidas
     Dado que não existe um usuário com username "naoexiste"
     Quando eu envio um POST para "/auth/login" com username "naoexiste" e senha "errada"
     Entao a resposta deve ter status code 401
-    E o corpo deve conter a mensagem "Credenciais inválidas."
+    E o corpo deve conter "Credenciais inválidas."
 
 Cenario: Registro de novo usuário com sucesso
     Dado que não existe um usuário com username "novoUsuario"
@@ -24,4 +24,4 @@ Cenario: Tentativa de registro de usuário já existente
     Dado que já existe um usuário com username "usuarioExistente"
     Quando eu envio um POST de registro para "/auth/register" com username "usuarioExistente"
     Entao a resposta deve ter status code 409
-    E o corpo deve conter a mensagem "Nome de usuário já existe."
+    E o corpo deve conter "Nome de usuário já existe."

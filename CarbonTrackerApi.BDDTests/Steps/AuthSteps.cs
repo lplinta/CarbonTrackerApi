@@ -128,8 +128,8 @@ public class AuthControllerSteps(CustomWebApplicationFactory factory)
         json.Should().Contain(username);
     }
 
-    [Then(@"o corpo deve conter a mensagem ""(.*)""")]
-    public async Task ThenCorpoDeveConterMensagem(string mensagem)
+    [Then(@"o corpo deve conter ""(.*)""")]
+    public async Task ThenCorpoDeveConter(string mensagem)
     {
         var json = await _response!.Content.ReadAsStringAsync();
         json.Should().Contain(mensagem);

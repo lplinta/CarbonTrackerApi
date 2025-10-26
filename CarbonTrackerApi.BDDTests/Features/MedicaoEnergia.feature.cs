@@ -161,23 +161,23 @@ namespace CarbonTrackerApi.BDDTests.Features
 #line 9
         await testRunner.GivenAsync("que o medidor de energia com ID 1 existe no banco de dados", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
                             "campo",
                             "valor"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "consumoValor",
                             "123,45"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "unidadeMedida",
                             "kWh"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "timestamp",
                             "2025-10-25T10:00:00Z"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "medidorEnergiaId",
                             "1"});
 #line 10
-        await testRunner.GivenAsync("que eu tenha os seguintes dados da medição:", ((string)(null)), table2, "Dado ");
+        await testRunner.GivenAsync("que eu tenha os seguintes dados da medição:", ((string)(null)), table3, "Dado ");
 #line hidden
 #line 16
         await testRunner.WhenAsync("eu enviar a requisição para o endpoint \"/MedicaoEnergia\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
@@ -213,23 +213,23 @@ namespace CarbonTrackerApi.BDDTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
                             "campo",
                             "valor"});
-                table3.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "consumoValor",
                             "-10"});
-                table3.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "unidadeMedida",
                             "kWh"});
-                table3.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "timestamp",
                             "2025-10-25T10:00:00Z"});
-                table3.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "medidorEnergiaId",
                             "1"});
 #line 21
-        await testRunner.GivenAsync("que eu tenha os seguintes dados da medição:", ((string)(null)), table3, "Dado ");
+        await testRunner.GivenAsync("que eu tenha os seguintes dados da medição:", ((string)(null)), table4, "Dado ");
 #line hidden
 #line 27
         await testRunner.WhenAsync("eu enviar a requisição para o endpoint \"/MedicaoEnergia\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
@@ -262,23 +262,23 @@ namespace CarbonTrackerApi.BDDTests.Features
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
                             "campo",
                             "valor"});
-                table4.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "consumoValor",
                             "50"});
-                table4.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "unidadeMedida",
                             "kWh"});
-                table4.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "timestamp",
                             "2025-10-25T10:00:00Z"});
-                table4.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "medidorEnergiaId",
                             "9999"});
 #line 31
-        await testRunner.GivenAsync("que eu tenha os seguintes dados da medição:", ((string)(null)), table4, "Dado ");
+        await testRunner.GivenAsync("que eu tenha os seguintes dados da medição:", ((string)(null)), table5, "Dado ");
 #line hidden
 #line 37
         await testRunner.WhenAsync("eu enviar a requisição para o endpoint \"/MedicaoEnergia\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");

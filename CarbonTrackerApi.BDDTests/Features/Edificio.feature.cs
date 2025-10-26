@@ -17,22 +17,22 @@ namespace CarbonTrackerApi.BDDTests.Features
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class GestaoDeEdificiosFeature : object, global::Xunit.IClassFixture<GestaoDeEdificiosFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class GerenciamentoDeEdificiosFeature : object, global::Xunit.IClassFixture<GerenciamentoDeEdificiosFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("pt"), "Features", "Gestão de Edifícios", "  Como um usuário autenticado\r\n  Eu quero gerenciar informações de edifícios\r\n  P" +
-                "ara rastrear o consumo de carbono por localização", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("pt"), "Features", "Gerenciamento de edifícios", "Como usuário autenticado da API\r\nQuero cadastrar, consultar e atualizar edifícios" +
+                "\r\nPara que o sistema gerencie corretamente os registros de consumo de energia", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
 #line 1 "Edificio.feature"
 #line hidden
         
-        public GestaoDeEdificiosFeature(GestaoDeEdificiosFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public GerenciamentoDeEdificiosFeature(GerenciamentoDeEdificiosFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -106,7 +106,7 @@ namespace CarbonTrackerApi.BDDTests.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Edificio.feature.ndjson", 4);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Edificio.feature.ndjson", 6);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -134,19 +134,19 @@ namespace CarbonTrackerApi.BDDTests.Features
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Cadastro bem-sucedido de um novo edifício")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Gestão de Edifícios")]
-        [global::Xunit.TraitAttribute("Description", "Cadastro bem-sucedido de um novo edifício")]
-        public async global::System.Threading.Tasks.Task CadastroBem_SucedidoDeUmNovoEdificio()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Cadastro bem-sucedido de edifício")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Gerenciamento de edifícios")]
+        [global::Xunit.TraitAttribute("Description", "Cadastro bem-sucedido de edifício")]
+        public async global::System.Threading.Tasks.Task CadastroBem_SucedidoDeEdificio()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cadastro bem-sucedido de um novo edifício", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cadastro bem-sucedido de edifício", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 7
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
+    this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -155,53 +155,50 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 8
-    await testRunner.GivenAsync("que eu esteja autenticado como um usuário válido", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
-#line hidden
                 global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
                             "campo",
                             "valor"});
                 table1.AddRow(new string[] {
                             "nome",
-                            "Sede Central"});
-                table1.AddRow(new string[] {
-                            "endereco",
-                            "Av. Paulista, 1000"});
+                            "Edifício Central"});
                 table1.AddRow(new string[] {
                             "cidade",
-                            "Itarare"});
+                            "São Paulo"});
+                table1.AddRow(new string[] {
+                            "endereco",
+                            "Rua tal"});
                 table1.AddRow(new string[] {
                             "tipoEdificio",
-                            "Casa"});
-#line 9
-    await testRunner.GivenAsync("que eu tenha os seguintes dados de edifício:", ((string)(null)), table1, "Dado ");
+                            "Prédio"});
+#line 8
+        await testRunner.GivenAsync("que eu possuo os seguintes dados do edifício:", ((string)(null)), table1, "Dado ");
+#line hidden
+#line 14
+        await testRunner.WhenAsync("eu enviar uma requisição POST para \"edificio\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 15
-    await testRunner.WhenAsync("eu enviar a requisição POST para o endpoint \"/Edificio\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+        await testRunner.ThenAsync("o status code da resposta deve ser 201", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
 #line 16
-    await testRunner.ThenAsync("o status code da resposta deve ser 201", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
-#line hidden
-#line 17
-    await testRunner.AndAsync("o corpo da resposta deve conter o campo \"nome\" com valor \"Sede Central\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+        await testRunner.AndAsync("o corpo deve conter o campo \"nome\" com valor \"Edifício Central\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Busca bem-sucedida de um edifício existente")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Gestão de Edifícios")]
-        [global::Xunit.TraitAttribute("Description", "Busca bem-sucedida de um edifício existente")]
-        public async global::System.Threading.Tasks.Task BuscaBem_SucedidaDeUmEdificioExistente()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Consulta de edifício existente por ID")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Gerenciamento de edifícios")]
+        [global::Xunit.TraitAttribute("Description", "Consulta de edifício existente por ID")]
+        public async global::System.Threading.Tasks.Task ConsultaDeEdificioExistentePorID()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Busca bem-sucedida de um edifício existente", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Consulta de edifício existente por ID", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 19
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line 18
+    this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -210,20 +207,109 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
+#line 19
+        await testRunner.GivenAsync("que existe um edifício cadastrado com ID 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+#line hidden
 #line 20
-    await testRunner.GivenAsync("que eu esteja autenticado como um usuário válido", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+        await testRunner.WhenAsync("eu enviar uma requisição GET para \"edificio/1\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 21
-    await testRunner.GivenAsync("que o edifício com ID 999 e Nome \"Filial Norte\" existe no banco de dados", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+        await testRunner.ThenAsync("o status code da resposta deve ser 200", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
 #line 22
-    await testRunner.WhenAsync("eu enviar a requisição GET para o endpoint \"/Edificio/999\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+        await testRunner.AndAsync("o corpo deve conter o campo \"id\" com valor 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
-#line 23
-    await testRunner.ThenAsync("o status code da resposta deve ser 200", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
-#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Tentativa de buscar edifício inexistente")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Gerenciamento de edifícios")]
+        [global::Xunit.TraitAttribute("Description", "Tentativa de buscar edifício inexistente")]
+        public async global::System.Threading.Tasks.Task TentativaDeBuscarEdificioInexistente()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "2";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Tentativa de buscar edifício inexistente", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
 #line 24
-    await testRunner.AndAsync("o corpo da resposta deve conter o campo \"nome\" com valor \"Filial Norte\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+    this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 25
+        await testRunner.GivenAsync("que não existe um edifício com ID 999", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+#line hidden
+#line 26
+        await testRunner.WhenAsync("eu enviar uma requisição GET para \"edificio/999\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+#line hidden
+#line 27
+        await testRunner.ThenAsync("o status code da resposta deve ser 404", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line hidden
+#line 28
+        await testRunner.AndAsync("o corpo deve conter a mensagem \"não encontrado\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Atualização bem-sucedida de edifício")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Gerenciamento de edifícios")]
+        [global::Xunit.TraitAttribute("Description", "Atualização bem-sucedida de edifício")]
+        public async global::System.Threading.Tasks.Task AtualizacaoBem_SucedidaDeEdificio()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "3";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Atualização bem-sucedida de edifício", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 30
+    this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 31
+        await testRunner.GivenAsync("que existe um edifício cadastrado com ID 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+#line hidden
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "campo",
+                            "valor"});
+                table2.AddRow(new string[] {
+                            "nome",
+                            "Edifício Atualizado"});
+                table2.AddRow(new string[] {
+                            "cidade",
+                            "São Paulo"});
+                table2.AddRow(new string[] {
+                            "endereco",
+                            "Rua tal"});
+                table2.AddRow(new string[] {
+                            "tipoEdificio",
+                            "Prédio"});
+#line 32
+        await testRunner.AndAsync("que eu possuo os seguintes novos dados do edifício:", ((string)(null)), table2, "E ");
+#line hidden
+#line 38
+        await testRunner.WhenAsync("eu enviar uma requisição PUT para \"edificio/1\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+#line hidden
+#line 39
+        await testRunner.ThenAsync("o status code da resposta deve ser 200", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line hidden
+#line 40
+        await testRunner.AndAsync("o corpo deve conter o campo \"nome\" com valor \"Edifício Atualizado\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -236,12 +322,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await GestaoDeEdificiosFeature.FeatureSetupAsync();
+                await GerenciamentoDeEdificiosFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await GestaoDeEdificiosFeature.FeatureTearDownAsync();
+                await GerenciamentoDeEdificiosFeature.FeatureTearDownAsync();
             }
         }
     }

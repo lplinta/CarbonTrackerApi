@@ -201,7 +201,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.ThenAsync("a resposta deve ter status code 401", ((string)(null)), ((global::Reqnroll.Table)(null)), "Entao ");
 #line hidden
 #line 15
-    await testRunner.AndAsync("o corpo deve conter a mensagem \"Credenciais inválidas.\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+    await testRunner.AndAsync("o corpo deve conter \"Credenciais inválidas.\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -276,7 +276,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.ThenAsync("a resposta deve ter status code 409", ((string)(null)), ((global::Reqnroll.Table)(null)), "Entao ");
 #line hidden
 #line 27
-    await testRunner.AndAsync("o corpo deve conter a mensagem \"Nome de usuário já existe.\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+    await testRunner.AndAsync("o corpo deve conter \"Nome de usuário já existe.\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

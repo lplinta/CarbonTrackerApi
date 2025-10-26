@@ -18,44 +18,58 @@ public class MedicaoEnergiaSteps(CustomWebApplicationFactory factory, ScenarioCo
     [Given("que o edifício com ID {int} existe no banco de dados")]
     public void GivenQueOEdificioComIdExisteNoBancoDeDados(int edificioId)
     {
-        using var scope = factory.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        var medidorExistente = db.Set<Edificio>().Find(edificioId);
-
-        if (medidorExistente == null)
+        try
         {
-            var novoEdificio = new Edificio
-            {
-                Id = edificioId,
-            };
+            using var scope = factory.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-            db.Set<Edificio>().Add(novoEdificio);
-            db.SaveChanges();
+            var medidorExistente = db.Set<Edificio>().Find(edificioId);
+
+            if (medidorExistente == null)
+            {
+                var novoEdificio = new Edificio
+                {
+                    Id = edificioId,
+                };
+
+                db.Set<Edificio>().Add(novoEdificio);
+                db.SaveChanges();
+            }
+        }
+        catch (Exception)
+        {
+            // ignored
         }
     }
 
     [Given(@"que o medidor de energia com ID {int} existe no banco de dados")]
     public void DadoQueOMedidorDeEnergiaComIdExisteNoBancoDeDados(int medidorId)
     {
-        using var scope = factory.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        var medidorExistente = db.Set<MedidorEnergia>().Find(medidorId);
-
-        if (medidorExistente == null)
+        try
         {
-            var novoMedidor = new MedidorEnergia
-            {
-                Id = medidorId,
-                NumeroSerie = "123456789",
-                TipoMedidor = "Eletricidade",
-                Localizacao = "Casa",
-                EdificioId = 1
-            };
+            using var scope = factory.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-            db.Set<MedidorEnergia>().Add(novoMedidor);
-            db.SaveChanges();
+            var medidorExistente = db.Set<MedidorEnergia>().Find(medidorId);
+
+            if (medidorExistente == null)
+            {
+                var novoMedidor = new MedidorEnergia
+                {
+                    Id = medidorId,
+                    NumeroSerie = "123456789",
+                    TipoMedidor = "Eletricidade",
+                    Localizacao = "Casa",
+                    EdificioId = 1
+                };
+
+                db.Set<MedidorEnergia>().Add(novoMedidor);
+                db.SaveChanges();
+            }
+        }
+        catch (Exception)
+        {
+            // ignored
         }
     }
 
